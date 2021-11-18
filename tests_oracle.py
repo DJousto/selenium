@@ -1,6 +1,5 @@
 import cx_Oracle
 import config
-import sqlite3 as lite
 
 def connect_oracle():
 	try:
@@ -17,32 +16,25 @@ def connect_oracle():
 	    print(error)
 	    return False
 
-def connect_sqlite():
-	try:
-	    connection = lite.connect('./data/chinook.db', timeout=10, isolation_level = None)
-	    return connection
-	except Error as error:
-	    print(error)
-	    return False
 
 ###################
 # fonctions de test
 ###################
 
 # teste la connection à la base
-def test_connection_sqlite():
-	connection = connect_sqlite()
+def test_connection():
+	connection = connect_oracle()
 	assert connection!=False
 	connection.close()
 
 # teste la présence d'une table
-def test_base_sqlite_albums():
+def test_base_T_ADRESSE():
 
-	connection = connect_sqlite()
+	connection = connect_oracle()
 	cursor = connection.cursor()
 
-	_SQL = "select * from albums"
-	cursor.execute(_SQL)
+	CommandeSQL = "select * from T_ADRESSE"
+	cursor.execute(CommandeSQL)
 
 	results = cursor.fetchall()
 	results_list = [item[1] for item in results]
@@ -52,13 +44,5 @@ def test_base_sqlite_albums():
 
 	connection.close()
 
-
-def test_base_sqlite_album32():
-	connection = connect_sqlite()
-	cursor = connection.cursor()
-	cursor.execute("SELECT * FROM albums  where AlbumId=32")
-	liste = [r for r in cursor.fetchall()]
-	assert len(liste)>0
-	connection.close()
 
 
